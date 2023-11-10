@@ -1,11 +1,11 @@
 package MyApp::Controller::Foo;
-use Mojolicious::Lite;
+use Mojolicious::Lite, -signatures;
 
 helper jank => sub { 'Welcome to this helper' };
 
 our $startup_hook_fired;
 hook before_server_start => sub { $startup_hook_fired ++ };
-get '/hooked' => sub { $c->render( text => $startup_hook_fired) };
+get '/hooked' => sub ($c) { $c->render( text => $startup_hook_fired) };
 
 get '/' => {text => 'Welcome to Mojolyst!'};
 
