@@ -30,8 +30,6 @@ jobs:
       - name: Install dependencies
         run: |
           cpanm -n --installdeps .
-          cpanm -n Cpanel::JSON::XS EV Role::Tiny
-          cpanm -n Test::Pod Test::Pod::Coverage
       - name: Run tests
         run: prove -l t
         env:
