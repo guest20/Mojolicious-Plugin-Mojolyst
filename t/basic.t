@@ -16,7 +16,7 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
-get '/helper' => sub { $_[0]->render(text => $_[0]->jank) };
+get '/helper' => sub { $_[0]->render(inline_template => '%= jank', layout => '') };
 plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
 
 my $t = Test::Mojo->new;
