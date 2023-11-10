@@ -2,6 +2,7 @@ package MyApp::Controller::Foo;
 use Mojolicious::Lite;
 
 helper jank => sub { 'Welcome to this helper' };
+get '/helper' => sub { $_[0]->render(text => $_[0]->jank) };
 
 our $startup_hook_fired;
 hook before_server_start => sub { $startup_hook_fired ++ };
@@ -16,12 +17,13 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
-get '/helper' => sub { $_[0]->render(inline_template => '%= jank', layout => '') };
 plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
+get '/foreigner' => sub { $_[0]->render(text => $_[0]->jank) };
 
 my $t = Test::Mojo->new;
 $t->get_ok('/')->status_is(200)->content_is('Welcome to Mojolyst!');
 $t->get_ok('/hooked')->status_is(200)->content_is(1);
 $t->get_ok('/helper')->status_is(200)->content_is('Welcome to this helper');
+$t->get_ok('/foreigner')->status_is(200)->content_is('Welcome to this helper');
 
 done_testing();
