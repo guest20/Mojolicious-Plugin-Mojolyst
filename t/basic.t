@@ -15,10 +15,10 @@ use Mojo::Base -strict;
 
 use Test::More;
 use Mojolicious::Lite;
+get '/foreigner' => sub { $_[0]->render(text => $_[0]->jank) };
 use Test::Mojo;
 
 plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
-get '/foreigner' => sub { $_[0]->render(text => $_[0]->jank) };
 
 my $t = Test::Mojo->new;
 $t->get_ok('/')->status_is(200)->content_is('Welcome to Mojolyst!');
