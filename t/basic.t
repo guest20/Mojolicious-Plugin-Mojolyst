@@ -5,7 +5,7 @@ helper jank => sub { 'Welcome to this helper' };
 
 our $startup_hook_fired;
 hook before_server_start => sub { $startup_hook_fired ++ };
-get '/hooked' => sub ($c) { $_[0]->render(text => $startup_hook_fired) };
+get '/hooked' => sub { $_[0]->render(text => $startup_hook_fired) };
 
 get '/' => {text => 'Welcome to Mojolyst!'};
 
@@ -16,7 +16,7 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
-get '/helper' => sub { $_[0]->render(text => $c->jank) };
+get '/helper' => sub { $_[0]->render(text => $_[0]->jank) };
 plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
 
 my $t = Test::Mojo->new;
