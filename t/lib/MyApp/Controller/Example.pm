@@ -2,7 +2,8 @@ package # paused
   MyApp::Controller::Example;
 use Mojolicious::Lite -signatures;
 
-get '/' => sub ($c) {
+get '/' => sub { 
+  my ($c) = @_;
   $c->render(template => 'index');
 };
 
