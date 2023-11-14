@@ -7,9 +7,10 @@ use Test::Mojo;
 use File::Basename qw( dirname );
 use lib join '/', dirname($0), 'lib';
 
-my $CANT_LOCATE_NEW = qr/^Can't locate object method "new" via package/;
-my $LOADING_FAIL = qr/^Loading "MyApp::Controller::BadModule" failed:/;
-my $NEVER_AGAIN  = qr/^Attempt to reload .*[.]pm aborted[.]/;
+my $CANT_LOCATE_NEW = qr!^Can't locate object method "new" via package!;
+my $LOADING_FAIL = qr!^Loading "MyApp::Controller::BadModule" failed:!;
+my $NEVER_AGAIN  = qr!^Attempt to reload .*[.]pm aborted[.]!;
+my $BAD_SOFTWARE = qr!^syntax error at t/lib/MyApp/Controller/BadModule.pm!;
 
 subtest "default" => sub {
   local %INC = %INC; delete $INC{"MyApp/Controller/BadModule.pm"};
@@ -47,7 +48,7 @@ subtest "callback" => sub {
   };
   is($@,'');
   is(0+@exceptions, 1, "want a single call");
-  like($exceptions[0], $LOADING_FAIL, "BadModule produced desired callback: " . $exceptions[0]) or diag explain \@exceptions;
+  like($exceptions[0], $BAD_SOFTWARE, "BadModule produced desired callback: " . $exceptions[0]) or diag explain \@exceptions;
 };
 
 done_testing();
