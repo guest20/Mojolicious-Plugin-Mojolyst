@@ -13,9 +13,9 @@ sub register {
     # Steal children
     my $e = load_class $class;
     if (defined (my $handler = $conf->{'errors'}) and ref $e) {
-      warn qq{Loading "$module" failed: $e} if 'warn' eq $handler;
-      die  qq{Loading "$module" failed: $e} if 'die'  eq $handler;
-      $handler->($e)                        if 'CODE' eq ref $handler;
+      warn qq{Loading "$class" failed: $e} if 'warn' eq $handler;
+      die  qq{Loading "$class" failed: $e} if 'die'  eq $handler;
+      $handler->($e)                       if 'CODE' eq ref $handler;
       next
     }
 
