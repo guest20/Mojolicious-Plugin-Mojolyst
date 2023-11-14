@@ -1,6 +1,6 @@
 package # paused
   MyApp::Controller::Example;
-use Mojolicious::Lite -signatures;
+use Mojolicious::Lite;
 
 get '/' => sub { 
   my ($c) = @_;
