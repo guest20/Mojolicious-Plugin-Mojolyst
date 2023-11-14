@@ -13,10 +13,10 @@ subtest "default" => sub {
 };
 
 subtest "dies" => sub {
-  my @warnings; $SIG{__WARN__} = sub { push @warnings; shift };
+  my @warnings; $SIG{__WARN__} = sub { push @warnings, shift };
   plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'warn'};
   is_deeply(\@warnings, [], "BadModule produced a warning");
-}
+};
 
 subtest "dies" => sub {
   my ($survived, $e);
@@ -27,7 +27,7 @@ subtest "dies" => sub {
     $e = $@;
    };
   is($survived, undef, "exceptions are fatal");
-  is($e, "", "died when loading a controller that doesn't load")
+  is($e, "", "died when loading a controller that doesn't load");
 };
 
 done_testing();
