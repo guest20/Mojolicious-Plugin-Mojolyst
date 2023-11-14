@@ -9,7 +9,7 @@ use lib join '/', dirname($0), 'lib';
 
 subtest "default" => sub {
   eval {
-    plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} } 
+    plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} 
   };
   like $@, qr/Can't locate object method "new" via package/, "existing behaviour";
 };
@@ -31,10 +31,13 @@ subtest "dies" => sub {
 subtest "callback" => sub {
   my @errors;
   eval {
-    plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => sub { push @errors, shift}};
+    plugin 'Mojolyst' => {
+      controllers => 'MyApp::Controller', 
+      errors => sub { push @errors, shift },
+    }
   };
   is($@,undef);
-  is_deeply(\@warnings, [], "BadModule produced a warning");
+  is_deeply(\@errors, [], "BadModule produced a warning");
 };
 
 done_testing();
