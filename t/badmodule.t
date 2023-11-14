@@ -9,7 +9,8 @@ use lib join '/', dirname($0), 'lib';
 
 my $CANT_LOCATE_NEW = qr/^Can't locate object method "new" via package/;
 my $LOADING_FAIL = qr/^Loading "MyApp::Controller::BadModule" failed:/;
-Attempt to reload MyApp/Controller/BadModule.pm aborted.
+my $NEVER_AGAIN  = qr/^Attempt to reload .*[.]pm aborted[.]/;
+
 subtest "default" => sub {
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} 
