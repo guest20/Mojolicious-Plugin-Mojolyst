@@ -12,7 +12,7 @@ my $LOADING_FAIL = qr/^Loading "MyApp::Controller::BadModule" failed:/;
 my $NEVER_AGAIN  = qr/^Attempt to reload .*[.]pm aborted[.]/;
 
 subtest "default" => sub {
-  local $INC{"MyApp/Controller/BadModule.pm"};
+  local %INC = %INC; delete $INC{"MyApp/Controller/BadModule.pm"};
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} 
   };
@@ -20,7 +20,7 @@ subtest "default" => sub {
 };
 
 subtest "dies" => sub {
-  local $INC{"MyApp/Controller/BadModule.pm"};
+  local %INC = %INC; delete $INC{"MyApp/Controller/BadModule.pm"};
   my @warnings; $SIG{__WARN__} = sub { push @warnings, shift };
   plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'warn'};
   is($@,'');
@@ -29,7 +29,7 @@ subtest "dies" => sub {
 };
 
 subtest "dies" => sub {
-  local $INC{"MyApp/Controller/BadModule.pm"};
+  local %INC = %INC; delete $INC{"MyApp/Controller/BadModule.pm"};
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'die'};
   };
@@ -37,7 +37,7 @@ subtest "dies" => sub {
 };
 
 subtest "callback" => sub {
-  local $INC{"MyApp/Controller/BadModule.pm"};
+  local %INC = %INC; delete $INC{"MyApp/Controller/BadModule.pm"};
   my @exceptions;
   eval {
     plugin 'Mojolyst' => {
