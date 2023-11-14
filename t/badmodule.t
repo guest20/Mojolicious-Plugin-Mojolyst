@@ -8,26 +8,33 @@ use File::Basename qw( dirname );
 use lib join '/', dirname($0), 'lib';
 
 subtest "default" => sub {
-  plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
-  ok(1, "Sure.");
+  eval {
+    plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} } 
+  };
+  like $@, qr/Can't locate object method "new" via package/, "existing behaviour";
 };
 
 subtest "dies" => sub {
   my @warnings; $SIG{__WARN__} = sub { push @warnings, shift };
   plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'warn'};
+  is($@,undef);
   is_deeply(\@warnings, [], "BadModule produced a warning");
 };
 
 subtest "dies" => sub {
-  my ($survived, $e);
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'die'};
-    $survived=1;
-  1} or do { 
-    $e = $@;
-   };
-  is($survived, undef, "exceptions are fatal");
-  is($e, "", "died when loading a controller that doesn't load");
+  };
+  like $@, qr/Loading "[^"]+" failed: /, "couldn't load it"
+};
+
+subtest "callback" => sub {
+  my @errors;
+  eval {
+    plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => sub { push @errors, shift}};
+  };
+  is($@,undef);
+  is_deeply(\@warnings, [], "BadModule produced a warning");
 };
 
 done_testing();
