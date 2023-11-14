@@ -20,7 +20,7 @@ subtest "default" => sub {
 subtest "dies" => sub {
   my @warnings; $SIG{__WARN__} = sub { push @warnings, shift };
   plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'warn'};
-  is($@,undef);
+  is($@,'');
   is(0+@warnings, 1, "want a single warning");
   like($warnings[0], $LOADING_FAIL, "BadModule produced desired warning: " . $warnings[0]);
 };
@@ -40,7 +40,7 @@ subtest "callback" => sub {
       errors => sub { push @exceptions, shift },
     }
   };
-  is($@,undef);
+  is($@,'');
   is(0+@exceptions, 1, "want a single warning");
   like($exceptions[0], $LOADING_FAIL, "BadModule produced desired warning: " . $exceptions[0]);
 };
