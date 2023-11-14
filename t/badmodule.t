@@ -12,6 +12,7 @@ my $LOADING_FAIL = qr/^Loading "MyApp::Controller::BadModule" failed:/;
 my $NEVER_AGAIN  = qr/^Attempt to reload .*[.]pm aborted[.]/;
 
 subtest "default" => sub {
+  local $INC{"MyApp/Controller/BadModule.pm"};
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller'} 
   };
@@ -19,6 +20,7 @@ subtest "default" => sub {
 };
 
 subtest "dies" => sub {
+  local $INC{"MyApp/Controller/BadModule.pm"};
   my @warnings; $SIG{__WARN__} = sub { push @warnings, shift };
   plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'warn'};
   is($@,'');
@@ -27,6 +29,7 @@ subtest "dies" => sub {
 };
 
 subtest "dies" => sub {
+  local $INC{"MyApp/Controller/BadModule.pm"};
   eval {
     plugin 'Mojolyst' => {controllers => 'MyApp::Controller', errors => 'die'};
   };
@@ -34,6 +37,7 @@ subtest "dies" => sub {
 };
 
 subtest "callback" => sub {
+  local $INC{"MyApp/Controller/BadModule.pm"};
   my @exceptions;
   eval {
     plugin 'Mojolyst' => {
@@ -42,8 +46,8 @@ subtest "callback" => sub {
     }
   };
   is($@,'');
-  is(0+@exceptions, 1, "want a single warning");
-  like($exceptions[0], $LOADING_FAIL, "BadModule produced desired warning: " . $exceptions[0]) or diag explain \@exceptions;
+  is(0+@exceptions, 1, "want a single call");
+  like($exceptions[0], $LOADING_FAIL, "BadModule produced desired callback: " . $exceptions[0]) or diag explain \@exceptions;
 };
 
 done_testing();
