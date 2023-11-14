@@ -4,7 +4,6 @@ use Mojo::Base 'Mojolicious::Plugin';
 our $VERSION = '0.01';
 
 use Mojo::Loader qw/find_modules load_class/;
-
 sub register {
   my ($self, $app, $conf) = @_;
 
@@ -13,6 +12,13 @@ sub register {
 
     # Steal children
     my $e = load_class $class;
+    if (defined (my $handler = $conf->{'errors'}) and ref $e) {
+      warn qq{Loading "$module" failed: $e} if 'warn' eq $handler;
+      die  qq{Loading "$module" failed: $e} if 'die'  eq $handler;
+      $handler->($e)                        if 'CODE' eq ref $handler;
+      next
+    }
+
     my @children = @{$class->new->routes->children};
     $app->routes->add_child($_) for @children;
 
@@ -60,9 +66,20 @@ L<Mojolicious::Plugin> and implements the following new ones.
 
 =head2 register
 
-  $plugin->register(Mojolicious->new);
+  $plugin->register(Mojolicious->new, $conf);
 
 Register plugin in L<Mojolicious> application.
+
+C<$conf> is a hash-ref with keys:
+
+=over 4
+
+=item C<controllers> - the namespace in which to find controllers to load.
+
+=item C<errors> - C<undef>, C<"die">, C<"warn">, or a code-ref to receive 
+the exception raised when loading a controller. (default: C<undef>)
+
+=back
 
 =head1 SEE ALSO
 
