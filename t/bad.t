@@ -9,8 +9,9 @@ use Mojo::Base -strict;
 use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
+my $t = Test::Mojo->new;
 
-plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
+$t->app->plugin('Mojolyst' => {controllers => 'MyApp::Controller'});
 like +(join '-|-', map { join ' ', @$_ } @{ app->log->history }), qr/Mojolyst: Test::BadApp died: syntax error at",/, ;
 
 
