@@ -12,8 +12,8 @@ use Mojolicious::Lite;
 use lib 't/lib';
 plugin('Mojolyst' => {controllers => 'Test::Mojolicious::Plugin::Mojolyst'});
 
-my $log = join '-|-', map {join ' ', @$_ } @{ app->log->history };
-diag "startup log: $log"; 
+my $log = join '\n', map {join ' ', @$_ } @{ app->log->history };
+diag "startup log: " . ( $log =~ s/^/ from log: /gr);
 like $log, qr/\Qdied: syntax error/;
 like $log, qr/Test::Mojolicious::Plugin::Mojolyst::BadApp/;
 
