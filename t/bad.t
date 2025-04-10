@@ -11,6 +11,6 @@ use Mojolicious::Lite;
 
 use lib 't/lib';
 plugin('Mojolyst' => {controllers => 'Test::Mojolicious::Plugin::Mojolyst'});
-like +(join '-|-', map { join ' ', @$_ } @{ app->log->history }), qr/Mojolyst: Test::Mojolicious::Plugin::Mojolyst::BadApp died: syntax error",/, ;
+like +(join '-|-', map { join ' ', @$_ } @{ app->log->history }), qr/\QMojolyst: Test::Mojolicious::Plugin::Mojolyst::BadApp died: syntax error",/, ;
 
 done_testing();
