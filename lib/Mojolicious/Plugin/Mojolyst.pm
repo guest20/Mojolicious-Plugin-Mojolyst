@@ -13,6 +13,8 @@ sub register {
 
     # Steal children
     my $e = load_class $class;
+    $app->log->error(sprintf "Mojolyst: %s died: %s", $class, (ref $e) ? "$e" : "Not found") if $e;
+    
     my @children = @{$class->new->routes->children};
     $app->routes->add_child($_) for @children;
 
