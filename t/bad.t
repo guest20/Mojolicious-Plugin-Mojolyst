@@ -11,7 +11,7 @@ use Mojolicious::Lite;
 use Test::Mojo;
 my $t = Test::Mojo->new;
 
-$t->app->plugin('Mojolyst' => {controllers => 'MyApp::Controller'});
+$t->app->plugin('Mojolyst' => {controllers => 'Test'});
 like +(join '-|-', map { join ' ', @$_ } @{ app->log->history }), qr/Mojolyst: Test::BadApp died: syntax error at",/, ;
 
 
