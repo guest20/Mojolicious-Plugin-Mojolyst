@@ -16,11 +16,18 @@ jobs:
         perl-version:
 #         - '5.14' # Mojolyst says five fouteen is fine, but mojo doesn't install there on github workers
           - '5.32'
-          - '5.16'
+# [DEPRECATION NOTICE] Docker Image Format v1 and Docker Image manifest version 2, schema 1 support is 
+#   disabled by default and will be removed in an upcoming release. Suggest the author of docker.io/library/perl:5.16 
+#   to upgrade the image to the OCI Format or Docker Image manifest v2, schema 2. More information at 
+#   https://docs.docker.com/go/deprecated-image-specs/
+# ##[warning]Docker pull failed with exit code 1, back off 3.919 seconds before retry.
+#         - '5.16'
 #          - '5.18'
-#          - '5.20'
+          - '5.20'
 #          - '5.22'
 #          - '5.30'
+          - '5.40'
+
     container:
       image: perl:${{ matrix.perl-version }}
     steps:
