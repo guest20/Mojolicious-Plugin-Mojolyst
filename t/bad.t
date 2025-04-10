@@ -5,14 +5,14 @@ get '/' => {text => 'Welcome to Mojolyst!'};
 
 package main;
 use Mojo::Base -strict;
+
 use Test::More;
+use Mojolicious::Lite;
 use Test::Mojo;
 
-use Mojolicious::Lite;
-my $t = Test::Mojo->new;
-use lib 't/lib';
-plugin 'Mojolyst' => {controllers => 'Test'};
+plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
 
+my $t = Test::Mojo->new;
 $t->app->log->level('trace');
 $t->get_ok('/')->status_is(200)->content_is('Welcome to Mojolyst!');
 
