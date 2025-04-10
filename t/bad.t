@@ -10,9 +10,9 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
+my $t = Test::Mojo->new;
 plugin 'Mojolyst' => {controllers => 'MyApp::Controller'};
 
-my $t = Test::Mojo->new;
 $t->app->log->level('trace');
 $t->get_ok('/')->status_is(200)->content_is('Welcome to Mojolyst!');
 
