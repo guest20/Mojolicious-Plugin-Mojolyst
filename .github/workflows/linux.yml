@@ -40,7 +40,7 @@ jobs:
         run: |
           cpanm -n --installdeps .
       - name: Run tests
-        run: prove --verbose -l t
+        run: prove --verbose -l t/*.t
         env:
           TEST_POD: 1
           TEST_EV: 1
